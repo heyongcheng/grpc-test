@@ -5,6 +5,7 @@ import com.rpc.yolo.YoloProto.InitReply;
 import com.rpc.yolo.YoloProto.InitRequest;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.NameResolverRegistry;
 
 /**
  * @author heyc
@@ -16,7 +17,12 @@ public class YoloClient {
     private YoloFunGrpc.YoloFunBlockingStub yoloFunBlockingStub;
 
     public YoloClient(String host, int port) {
+        //NameResolverRegistry.getDefaultRegistry().register();
         ManagedChannel managedChannel = ManagedChannelBuilder.forAddress(host, port).usePlaintext()
+            // 服务发现 和 负载均衡
+            // NameResolverProvider spi接口
+            //.defaultLoadBalancingPolicy()
+            //.defaultLoadBalancingPolicy()
             .build();
 
         yoloFunBlockingStub = YoloFunGrpc.newBlockingStub(managedChannel);
