@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+//option java_multiple_files = false; // 不拆分成多个文件
+option java_package = "com.rpc.yolo";
+option java_outer_classname = "YoloProto";
+
+// 对外提供的接口
+service YoloFun {
+  // 初始化
+  rpc  init(InitRequest) returns (InitReply) {}
+  // 检测
+  rpc detection(DetectionRequest) returns (DetectionReply) {}
+  //模拟方法
+  rpc free(FreeRequest) returns (FreeReply) {}
+}
+
+// 初始化发送参数对象
+message InitRequest {
+  string id = 1;
+  string cfg = 2;
+  string data = 3;
+  string weights = 4;
+}
+
+// 初始化方法返回参数对象
+message InitReply {
+  string result = 1;
+}
+
+// 检测方法发送对象
+message DetectionRequest {
+  string id = 1; // 模型编号
+  string path = 2; // 原图的文件路径
+  string detect_file_path = 3; // 识别后的文件路径
+}
+
+// 怕掉精度，直接存string
+message Box {
+  string x = 1;
+  string y =  2;
+  string w = 3;
+  string h = 4;
+  string obj = 5;
+  string prob = 6;
+}
+
+// 检测方法反馈对象
+message DetectionReply {
+  string msg = 1;
+  repeated Box boxes = 2;
+}
+
+//释放方法发送对象
+message FreeRequest {
+  string id = 1;
+}
+
+//释放方法反馈对象
+message FreeReply {
+  string result = 1;
+}
+
